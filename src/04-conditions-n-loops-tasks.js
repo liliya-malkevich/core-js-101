@@ -95,7 +95,7 @@ function getSumBetweenNumbers(n1, n2) {
  *   10,10,10 =>  true
  */
 function isTriangle(a, b, c) {
-  return c * c === a * a + b * b;
+  return c ** 2 === a ** 2 + b ** 2;
 }
 
 
@@ -162,11 +162,11 @@ function doRectanglesOverlap(/* rect1, rect2 */) {
  *   { center: { x:0, y:0 }, radius:10 },  { x:10, y:10 }   => false
  *
  */
-function isInsideCircle(/* circle, point */) {
-  throw new Error('Not implemented');
+function isInsideCircle(circle, point) {
+  return (point.x - circle.center.x) ** 2 + (point.y - circle.center.y) ** 2 < circle.radius ** 2;
 }
 
-
+// return (point.x - circle.x) ** 2 + (point.y - circle.y) ** 2 < circle.radius ** 2
 /**
  * Returns the first non repeated char in the specified strings otherwise returns null.
  *
@@ -205,8 +205,10 @@ function findFirstSingleChar(/* str */) {
  *   5, 3, true, true   => '[3, 5]'
  *
  */
-function getIntervalString(/* a, b, isStartIncluded, isEndIncluded */) {
-  throw new Error('Not implemented');
+function getIntervalString(a, b, isStartIncluded, isEndIncluded) {
+  const start = isStartIncluded ? '[' : '(';
+  const end = isEndIncluded ? ']' : ')';
+  return a < b ? `${start}${a}, ${b}${end}` : `${start}${b}, ${a}${end}`;
 }
 
 
@@ -222,8 +224,8 @@ function getIntervalString(/* a, b, isStartIncluded, isEndIncluded */) {
  * 'rotator' => 'rotator'
  * 'noon' => 'noon'
  */
-function reverseString(/* str */) {
-  throw new Error('Not implemented');
+function reverseString(str) {
+  return str.split('').reverse().join('');
 }
 
 
@@ -239,8 +241,8 @@ function reverseString(/* str */) {
  *   87354 => 45378
  *   34143 => 34143
  */
-function reverseInteger(/* num */) {
-  throw new Error('Not implemented');
+function reverseInteger(num) {
+  return Number(num.toString().split('').reverse().join(''));
 }
 
 
@@ -264,8 +266,21 @@ function reverseInteger(/* num */) {
  *   5436468789016589 => false
  *   4916123456789012 => false
  */
-function isCreditCardNumber(/* ccn */) {
-  throw new Error('Not implemented');
+function isCreditCardNumber(ccn) {
+  const ccnS = ccn.toString();
+  const p = (ccnS.length) % 2;
+  let sum = 0;
+  for (let i = 0; i < ccnS.length; i += 1) {
+    let dig = Number(ccnS[i]);
+    if (i % 2 === p) {
+      dig *= 2;
+      if (dig > 9) {
+        dig -= 9;
+      }
+    }
+    sum += dig;
+  }
+  return Number(sum % 10) === 0;
 }
 
 /**
@@ -282,8 +297,16 @@ function isCreditCardNumber(/* ccn */) {
  *   10000 ( 1+0+0+0+0 = 1 ) => 1
  *   165536 (1+6+5+5+3+6 = 26,  2+6 = 8) => 8
  */
-function getDigitalRoot(/* num */) {
-  throw new Error('Not implemented');
+function getDigitalRoot(num) {
+  const numS = num.toString();
+  let sum = 0;
+  for (let i = 0; i < numS.length; i += 1) {
+    sum += Number(numS[i]);
+  }
+  if (numS.length !== 1) {
+    return getDigitalRoot(sum);
+  }
+  return sum;
 }
 
 
